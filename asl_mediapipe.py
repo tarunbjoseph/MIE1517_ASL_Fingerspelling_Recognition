@@ -24,9 +24,9 @@ DEC_LAYERS     = 6
 N_HEADS        = 6
 FFN_DIM        = 1024
 EMBED_DIM      = 192
-DROPOUT        = 0.0
+DROPOUT        = 0.15
 BEAM_WIDTH     = 5
-LENGTH_PENALTY = 0.2
+LENGTH_PENALTY = 0.6
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {DEVICE}')
@@ -330,7 +330,6 @@ while cap.isOpened():
     if not ret:
         break
 
-    frame = cv2.flip(frame, 1)
     rgb   = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
     # MediaPipe
@@ -358,6 +357,8 @@ while cap.isOpened():
             prediction = beam_search(frame_buffer)
             print(f'Prediction: {prediction}')
 
+    frame = cv2.flip(frame, 1)
+
     # UI overlay
     status = 'RECORDING' if recording else 'SPACE to record'
     cv2.putText(frame, status, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8,
@@ -382,9 +383,6 @@ while cap.isOpened():
                     print(f'Final Prediction: {prediction}')
                 frame_buffer.clear()
                 frame_count = 0 
-cap.release()
-cv2.destroyAllWindows()
-detector.close()
 cap.release()
 cv2.destroyAllWindows()
 detector.close()
