@@ -197,12 +197,13 @@ with gr.Blocks(theme="soft") as demo:
         with gr.Column():
             text_output = gr.Textbox(label="Model Prediction", placeholder="Result will appear here...")
     
-    # Connect the button to the function
+    # Connect the button to the function and DISABLE the buggy API schema
     submit_btn.click(
         fn=process_video_to_text, 
         inputs=video_input, 
-        outputs=text_output
+        outputs=text_output,
+        api_name=False 
     )
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(show_api=False)
