@@ -7,6 +7,7 @@ import torch.nn.functional as F
 import mediapipe as mp
 import math
 import os
+from gtts import gTTS
 
 # ==========================================
 # 1. Setup, Hardcoded Config & Vocab
@@ -182,27 +183,41 @@ def process_video_to_text(video_path):
                 
     return ''.join([idx_to_char[i] for i in beams[0][0] if i not in (START_IDX, EOS_IDX, PAD_IDX) and i in idx_to_char])
 
+
+# 4. Text to Speech Component (TTS) 
+def process_video_and_speak(video_file):
+    # 1. Run your existing working model prediction
+    predicted_text = process_video_to_text(video_file) 
+    
+    # 2. Convert that text to an audio file
+    tts = gTTS(text=predicted_text, lang='en')
+    audio_path = "output_audio.mp3"
+    tts.save(audio_path)
+    
+    # 3. Return BOTH the text and the audio file to the UI
+    return predicted_text, audio_path
+    
 # ==========================================
 # 4. Gradio Interface (Blocks Version)
 # ==========================================
 with gr.Blocks(theme="ocean") as demo:
     gr.Markdown("# 🤟 ASL Fingerspelling Translator")
     gr.Markdown("### University of Toronto | MIE1517 Group 12")
-    gr.Markdown("Record a short video of yourself signing **'1-2-3'** to test the model.")
     
     with gr.Row():
         with gr.Column():
-            # Hardcoding the height stops the browser from recalculating size (killing the flicker)
-            video_input = gr.Video(label="Capture ASL (Webcam or Upload)", height=400)
+            video_input = gr.Video(label="Capture ASL", height=400)
             submit_btn = gr.Button("Translate Signs", variant="primary")
         with gr.Column():
-            # Lock the textbox height to match the video player
-            text_output = gr.Textbox(label="Model Prediction", placeholder="Result will appear here...", lines=14)
+            text_output = gr.Textbox(label="Model Prediction", lines=4)
+            # --- ADDED AUDIO PLAYER ---
+            audio_output = gr.Audio(label="Audio Output", autoplay=True) 
     
+    # --- UPDATED BUTTON CLICK ---
     submit_btn.click(
-        fn=process_video_to_text, 
+        fn=process_video_and_speak,          # Points to the new wrapper function
         inputs=video_input, 
-        outputs=text_output
+        outputs=[text_output, audio_output]  # Now outputs to both text and audio
     )
 
 if __name__ == "__main__":
