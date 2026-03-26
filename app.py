@@ -185,7 +185,7 @@ def process_video_to_text(video_path):
 # ==========================================
 # 4. Gradio Interface (Blocks Version)
 # ==========================================
-with gr.Blocks(theme="soft") as demo:
+with gr.Blocks(theme="ocean") as demo:
     gr.Markdown("# 🤟 ASL Fingerspelling Translator")
     gr.Markdown("### University of Toronto | MIE1517 Group 12")
     gr.Markdown("Record a short video of yourself signing **'1-2-3'** to test the model.")
@@ -197,13 +197,12 @@ with gr.Blocks(theme="soft") as demo:
         with gr.Column():
             text_output = gr.Textbox(label="Model Prediction", placeholder="Result will appear here...")
     
-    # Connect the button to the function and DISABLE the buggy API schema
+    # Clean connection without any deprecated boolean flags
     submit_btn.click(
         fn=process_video_to_text, 
         inputs=video_input, 
-        outputs=text_output,
-        api_name=False 
+        outputs=text_output
     )
 
 if __name__ == "__main__":
-    demo.launch(show_api=False)
+    demo.launch()
