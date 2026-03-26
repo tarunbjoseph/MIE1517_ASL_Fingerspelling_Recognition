@@ -185,18 +185,18 @@ def process_video_to_text(video_path):
 # ==========================================
 # 4. Gradio Interface
 # ==========================================
-# Remove the 'theme' from here (Gradio 6.0 moved it)
 demo = gr.Interface(
     fn=process_video_to_text,
-    inputs=gr.Video(label="Record or Upload ASL Fingerspelling", sources=["webcam", "upload"]),
-    outputs=gr.Textbox(label="Predicted Text", text_align="center"),
+    inputs=gr.Video(label="ASL Input (Webcam or Upload)"),
+    outputs=gr.Textbox(label="Model Prediction"),
     title="ASL Fingerspelling Translator",
-    description="Record a short video of yourself spelling '1-2-3'. Stay centered and well-lit!",
+    description="Record '1-2-3' to test. Ensure your hand is well-lit and the palm faces the camera.",
+    allow_flagging="never"
 )
 
 if __name__ == "__main__":
-    # Move theme here and DISABLE the experimental SSR which causes the glitching
     demo.launch(
-        theme="ocean", # Use 'ocean' or 'default' as 'huggingface' is currently 404-ing
-        ssr_mode=False  # This stops the experimental SSR glitching
+        server_name="0.0.0.0", 
+        server_port=7860,
+        show_api=False
     )
