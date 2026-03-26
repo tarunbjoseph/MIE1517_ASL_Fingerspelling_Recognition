@@ -1,6 +1,5 @@
 torch
-gradio==4.44.1
+gradio==6.10.0
 mediapipe==0.10.21
 opencv-python-headless
 numpy
-huggingface-hub==0.25.2
