@@ -16,7 +16,7 @@ python_version: "3.10"
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/) 
 [![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=flat&logo=PyTorch&logoColor=white)](https://pytorch.org/)
 [![MediaPipe](https://img.shields.io/badge/MediaPipe-00A89D.svg?style=flat&logo=Google&logoColor=white)](https://developers.google.com/mediapipe)
-[![Groq](https://img.shields.io/badge/Groq-Fast_LLM Inference-f55036.svg?style=flat)](https://groq.com/)
+[![Groq](https://img.shields.io/badge/Groq-Fast_LLM%20Inference-f55036.svg?style=flat)](https://groq.com/)
 
 ## 📌 Project Overview
 This repository contains the deployment architecture for an end-to-end American Sign Language (ASL) translator. It bridges the gap between raw video input, gesture recognition, and natural language communication. 
