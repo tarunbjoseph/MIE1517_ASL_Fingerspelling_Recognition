@@ -1,3 +1,13 @@
+---
+title: MIE1517 ASL Project
+emoji: 🤟
+colorFrom: blue
+colorTo: indigo
+sdk: gradio
+app_file: app.py
+pinned: false
+---
+
 # 🤟 ASL Fingerspelling Recognition: End-to-End Deployment
 **University of Toronto | MIE1517 Final Project | Group 12**
 
@@ -32,10 +42,9 @@ Instead of greedy decoding (taking the highest probability character at each ste
 ## 📂 Repository Structure
 
 ```text
-asl-mediapipe/
-│
+/
 ├── app.py                            # Main Gradio application, vocabulary mapping, and PyTorch architecture
 ├── requirements.txt                  # Deployment dependencies (MediaPipe pinned to 0.10.21)
 ├── asl_transformer_v6_best.pth       # Model weights
 ├── .gitattributes                    # Git LFS tracking for the large .pth file
-└── README.md                         # Project documentation
+└── README.md                         # Project documentation and HF routing
