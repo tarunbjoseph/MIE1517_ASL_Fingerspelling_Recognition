@@ -205,5 +205,4 @@ with gr.Blocks(theme="soft") as demo:
     )
 
 if __name__ == "__main__":
-    # Use 'ssr=False' (not ssr_mode) for Gradio 5.x
-    demo.launch(ssr=False)
+    demo.launch()
