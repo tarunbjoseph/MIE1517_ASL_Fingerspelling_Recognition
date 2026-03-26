@@ -1,5 +1,5 @@
 ---
-title: MIE1517 ASL Project
+title: Context-Aware ASL Translator
 emoji: 🤟
 colorFrom: blue
 colorTo: indigo
@@ -7,10 +7,9 @@ sdk: gradio
 sdk_version: 6.10.0
 app_file: app.py
 pinned: false
-python_version: "3.10"
 ---
 
-# 🤟 ASL Fingerspelling Recognition: End-to-End Deployment
+# 🤟 Context-Aware ASL Intent Translator
 **University of Toronto | MIE1517 Final Project | Group 12**
 
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/) 
@@ -21,7 +20,7 @@ python_version: "3.10"
 ## 📌 Project Overview
 This repository contains the deployment architecture for an end-to-end American Sign Language (ASL) translator. It bridges the gap between raw video input, gesture recognition, and natural language communication. 
 
-The system utilizes a custom **Conformer-Transformer** sequence-to-sequence model to extract raw character glosses from video, which are then passed through a high-speed **LLM Translation Wrapper** to infer context-aware intent, and finally synthesized into spoken audio. The application is containerized and deployed via a Gradio web interface.
+By utilizing a PyTorch Conformer sequence-to-sequence model paired with a high-speed **LLM Translation Wrapper (Groq)**, the system maps noisy, constrained hand gestures into accurate, context-aware spoken intents (featuring dedicated Emergency and Basic Communication modes).
 
 ## 🧠 Model Architecture & Pipeline
 Our pipeline transforms raw `.mp4` video into spoken audio through four distinct stages:
