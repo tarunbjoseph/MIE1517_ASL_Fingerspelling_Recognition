@@ -265,7 +265,7 @@ with gr.Blocks(css=custom_css) as demo:
             </div>
             
             <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
-                <img src="https://upload.wikimedia.org/wikipedia/en/0/04/Utoronto_coa.svg" alt="UofT Crest" style="height: 65px; object-fit: contain;">
+                <img src="https://upload.wikimedia.org/wikipedia/en/0/04/Utoronto_coa.svg" alt="UofT Crest" style="height: 100px; object-fit: contain;">
                 
                 <div style="display: flex; gap: 8px;">
                     <img src="https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=flat&logo=PyTorch&logoColor=white" alt="PyTorch">
