@@ -204,47 +204,113 @@ def process_video_and_speak(video_file, mode_selection):
     return raw_predicted_text, enhanced_text, audio_path
 
 # ==========================================
-# 4. Custom CSS & Gradio Interface
+# 4. NEW UofT CUSTOM UI/UX Section
 # ==========================================
+
+# CUSTOM CSS: Backgrounds, Glassmorphism, Navy and Gold accents
 custom_css = """
 body {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364) !important; 
+    background: linear-gradient(135deg, #0a192f, #002A5C, #2c5364) !important; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
 .gradio-container {
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(10px) !important;
+    background: rgba(0, 42, 92, 0.1) !important; /* Navy base frosted glass */
+    backdrop-filter: blur(15px) !important;
     border-radius: 20px !important;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    padding: 2rem !important;
+    box-shadow: 0 10px 40px rgba(0, 42, 92, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    padding: 2.5rem !important;
 }
+/* Ensure clean center alignment for main blocks */
+div.video-input, div.submit-button, div.radio-wrapper, div.blocks-header {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+/* Text Color Override to pop against navy blue */
 h1, h2, h3, p, span {
     color: #f1f5f9 !important;
+}
+/* Component Borders & Backgrounds consistent with the glass theme */
+div.video-input, textarea, div.radio-wrapper label {
+    background: rgba(0, 42, 92, 0.2) !important;
+    border: 1px solid rgba(0, 42, 92, 0.3) !important;
+    border-radius: 10px !important;
+    color: #f1f5f9 !important;
+}
+/* Radio buttons style: Navy-blue when selected (instead of green) */
+div.radio-wrapper input[type='radio']:checked + label {
+    background-color: #007bff !important; /* Specific bright blue */
+    color: white !important;
+    border-color: #007bff !important;
+}
+/* Final polish on the 'Groq' Badge broken markdown from image_0.png */
+img[alt='Groq'] {
+    vertical-align: middle;
+}
+/* Primary Button (Translate Signs) - Polished blue gradient */
+button.primary {
+    background: linear-gradient(90deg, #0056b3 0%, #007bff 100%) !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3) !important;
+    color: white !important;
+}
+button.primary:hover {
+    background: linear-gradient(90deg, #007bff 0%, #0056b3 100%) !important;
 }
 """
 
 with gr.Blocks(css=custom_css) as demo:
-    # Restored your Markdown headers!
-    gr.Markdown("# 🤟 Context-Aware ASL Intent Translator")
-    gr.Markdown("### University of Toronto | MIE1517 Group 12")
+    # Restored and centered gr.Markdown headers
+    with gr.Column(elem_id="blocks-header"):
+        gr.Markdown("# 🤟 Context-Aware ASL Intent Translator")
+        gr.Markdown("### University of Toronto | MIE1517 Group 12")
     
-    with gr.Row():
-        with gr.Column():
-            video_input = gr.Video(label="Capture ASL", height=400)
-            
-            mode_toggle = gr.Radio(
-                choices=["Emergency/Medical", "Basic Communication"], 
-                value="Emergency/Medical", 
-                label="Translation Context (LLM Prompt)"
-            )
-            
-            submit_btn = gr.Button("Translate Signs", variant="primary")
-            
-        with gr.Column():
-            raw_text_output = gr.Textbox(label="1. Raw Model Output (Glosses)", lines=2)
-            enhanced_text_output = gr.Textbox(label="2. LLM Enhanced Intent", lines=2)
-            audio_output = gr.Audio(label="3. Spoken Audio", autoplay=True) 
+    # Dynamic HTML Header Section (Logo + Fixed Badges)
+    gr.HTML("""
+        <div style="text-align: center; padding: 20px 0; margin-bottom: 25px; color: #f1f5f9;">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div style="width: 120px; height: 120px; margin-bottom: 15px; border-radius: 5px; background: rgba(0, 42, 92, 0.8);">
+                    <img src="https://via.placeholder.com/120x120.png?text=UofT+Crest" alt="UofT Crest Placeholder" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                
+                <h2 style="font-size: 1.5rem; font-weight: 300; margin-top: 0;">Fingerspelling to Speech (Emergency & Basic Modes)</h2>
+                <p style="color: #94a3b8; font-size: 0.9rem;">
+                    <em>Specialized Prototype utilizing LLM post-processing for context-aware, fault-tolerant translation</em>
+                </p>
+                
+                <div style="display: flex; gap: 10px; margin-top: 25px; justify-content: center; align-items: center;">
+                    <a href="https://pytorch.org/" target="_blank"><img src="https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=flat&logo=PyTorch&logoColor=white" alt="PyTorch"></a>
+                    <a href="https://developers.google.com/mediapipe" target="_blank"><img src="https://img.shields.io/badge/MediaPipe-00A89D.svg?style=flat&logo=Google&logoColor=white" alt="MediaPipe"></a>
+                    <a href="https://groq.com/" target="_blank"><img src="https://img.shields.io/badge/Groq-Fast_LLM%20Inference-f55036.svg?style=flat" alt="Groq"></a>
+                </div>
+            </div>
+        </div>
+    """)
     
+    # Centered Two-Column Application Layout
+    with gr.Column():
+        with gr.Row():
+            with gr.Column():
+                video_input = gr.Video(label="Capture ASL", height=400, elem_id="video-input")
+                
+                mode_toggle = gr.Radio(
+                    choices=["Emergency/Medical", "Basic Communication"], 
+                    value="Emergency/Medical", 
+                    label="Translation Context (LLM Prompt)",
+                    elem_id="radio-wrapper"
+                )
+                
+                submit_btn = gr.Button("Translate Signs", variant="primary", elem_id="submit-button")
+                
+            with gr.Column():
+                raw_text_output = gr.Textbox(label="1. Raw Model Output (Glosses)", lines=2, elem_id="output-textbox")
+                enhanced_text_output = gr.Textbox(label="2. LLM Enhanced Intent", lines=2, elem_id="output-textbox")
+                # FIXED: Break the audio player out as its own distinct block for presentability
+                gr.Markdown("### 🔊 Output Synthesis")
+                audio_output = gr.Audio(label="3. Spoken Audio", autoplay=True) 
+    
+    # Wire the components
     submit_btn.click(
         fn=process_video_and_speak,          
         inputs=[video_input, mode_toggle],  
@@ -252,4 +318,5 @@ with gr.Blocks(css=custom_css) as demo:
     )
 
 if __name__ == "__main__":
+    # Ensure the theme is handled correctly on launch
     demo.launch(theme="ocean")
