@@ -192,12 +192,13 @@ with gr.Blocks(theme="ocean") as demo:
     
     with gr.Row():
         with gr.Column():
-            video_input = gr.Video(label="Capture ASL (Webcam or Upload)")
+            # Hardcoding the height stops the browser from recalculating size (killing the flicker)
+            video_input = gr.Video(label="Capture ASL (Webcam or Upload)", height=400)
             submit_btn = gr.Button("Translate Signs", variant="primary")
         with gr.Column():
-            text_output = gr.Textbox(label="Model Prediction", placeholder="Result will appear here...")
+            # Lock the textbox height to match the video player
+            text_output = gr.Textbox(label="Model Prediction", placeholder="Result will appear here...", lines=14)
     
-    # Clean connection without any deprecated boolean flags
     submit_btn.click(
         fn=process_video_to_text, 
         inputs=video_input, 
