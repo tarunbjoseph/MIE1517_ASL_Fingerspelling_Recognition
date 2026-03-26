@@ -6,6 +6,7 @@ colorTo: indigo
 sdk: gradio
 app_file: app.py
 pinned: false
+python_version: 3.10
 ---
 
 # 🤟 ASL Fingerspelling Recognition: End-to-End Deployment
