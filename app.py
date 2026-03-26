@@ -202,12 +202,30 @@ def process_video_and_speak(video_file, mode_selection):
     
     # 4. Return to UI
     return raw_predicted_text, enhanced_text, audio_path
-    
+
 # ==========================================
-# 4. Gradio Interface
+# 4. Custom CSS & Gradio Interface
 # ==========================================
-with gr.Blocks(theme="ocean") as demo:
-    gr.Markdown("# 🤟 ASL Fingerspelling Translator")
+custom_css = """
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364) !important; 
+}
+.gradio-container {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    padding: 2rem !important;
+}
+h1, h2, h3, p, span {
+    color: #f1f5f9 !important;
+}
+"""
+
+with gr.Blocks(css=custom_css) as demo:
+    # Restored your Markdown headers!
+    gr.Markdown("# 🤟 Context-Aware ASL Intent Translator")
     gr.Markdown("### University of Toronto | MIE1517 Group 12")
     
     with gr.Row():
@@ -234,4 +252,4 @@ with gr.Blocks(theme="ocean") as demo:
     )
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(theme="ocean")
