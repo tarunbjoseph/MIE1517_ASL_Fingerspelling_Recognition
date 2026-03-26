@@ -183,20 +183,27 @@ def process_video_to_text(video_path):
     return ''.join([idx_to_char[i] for i in beams[0][0] if i not in (START_IDX, EOS_IDX, PAD_IDX) and i in idx_to_char])
 
 # ==========================================
-# 4. Gradio Interface
+# 4. Gradio Interface (Blocks Version)
 # ==========================================
-demo = gr.Interface(
-    fn=process_video_to_text,
-    inputs=gr.Video(label="ASL Input (Webcam or Upload)"),
-    outputs=gr.Textbox(label="Model Prediction"),
-    title="ASL Fingerspelling Translator",
-    description="Record '1-2-3' to test. Ensure your hand is well-lit and the palm faces the camera.",
-    allow_flagging="never"
-)
+with gr.Blocks(theme="soft") as demo:
+    gr.Markdown("# 🤟 ASL Fingerspelling Translator")
+    gr.Markdown("### University of Toronto | MIE1517 Group 12")
+    gr.Markdown("Record a short video of yourself signing **'1-2-3'** to test the model.")
+    
+    with gr.Row():
+        with gr.Column():
+            video_input = gr.Video(label="Capture ASL (Webcam or Upload)")
+            submit_btn = gr.Button("Translate Signs", variant="primary")
+        with gr.Column():
+            text_output = gr.Textbox(label="Model Prediction", placeholder="Result will appear here...")
+    
+    # Connect the button to the function
+    submit_btn.click(
+        fn=process_video_to_text, 
+        inputs=video_input, 
+        outputs=text_output
+    )
 
 if __name__ == "__main__":
-    demo.launch(
-        server_name="0.0.0.0", 
-        server_port=7860,
-        show_api=False
-    )
+    # Use 'ssr=False' (not ssr_mode) for Gradio 5.x
+    demo.launch(ssr=False)
