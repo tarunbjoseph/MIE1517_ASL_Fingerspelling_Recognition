@@ -258,7 +258,7 @@ with gr.Blocks() as demo:
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 10px 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px;">
             
             <div style="text-align: left;">
-                <h1 style="margin: 0; font-size: 2rem; color: #f1f5f9;">🤟 Context-Aware ASL Intent Translator</h1>
+                <h1 style="margin: 0; font-size: 2rem; color: #f1f5f9;">🤟 Context-Adaptive ASL Fingerspelling Translator</h1>
                 <h3 style="margin: 5px 0 0 0; color: #cbd5e1; font-weight: 300;">University of Toronto | MIE1517 Group 12</h3>
                 <p style="margin: 5px 0 0 0; color: #94a3b8; font-size: 0.95rem;">Fingerspelling to Speech (Emergency & Basic Modes)</p>
                 <p style="margin: 2px 0 0 0; color: #64748b; font-size: 0.85rem;"><em>Turning ASL fingerspelling into natural spoken sentences for emergency and everyday communication.</em></p>
