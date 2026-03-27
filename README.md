@@ -1,5 +1,5 @@
 ---
-title: Context-Aware ASL Translator
+title: Context-Adaptive ASL Translator
 emoji: 🤟
 colorFrom: blue
 colorTo: indigo
@@ -10,7 +10,7 @@ pinned: false
 python_version: "3.10"
 ---
 
-# 🤟 Context-Aware ASL Intent Translator
+# 🤟 Context-Adaptive ASL Fingerspelling Translator
 **University of Toronto | MIE1517 Final Project | Group 12**
 
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/) 
