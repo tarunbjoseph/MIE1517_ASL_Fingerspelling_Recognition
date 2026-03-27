@@ -251,7 +251,7 @@ button.primary:hover {
 }
 """
 
-with gr.Blocks(css=custom_css) as demo:
+with gr.Blocks() as demo:
     
     # NEW COMPACT HEADER: Flexbox keeps everything on one line
     gr.HTML("""
@@ -304,7 +304,7 @@ with gr.Blocks(css=custom_css) as demo:
     )
 
 if __name__ == "__main__":
-    demo.launch(theme="ocean")
+    demo.launch(theme="ocean", css=custom_css, ssr_mode=False)
 
 if __name__ == "__main__":
     # Ensure the theme is handled correctly on launch
