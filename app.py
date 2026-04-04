@@ -14,7 +14,7 @@ from llm_wrapper import enhance_text_with_llm
 # 1. Setup, Hardcoded Config & Vocab
 # ==========================================
 DEVICE = torch.device('cpu') 
-CKPT_PATH = 'asl_transformer_v6_best.pth'  # <-- Updated file name
+CKPT_PATH = 'asl_transformer_v6_best.pth'  
 
 class Config:
     FEATURE_SIZE   = 84
@@ -30,7 +30,6 @@ class Config:
     BEAM_WIDTH     = 5
     LENGTH_PENALTY = 0.6
 
-# Official Kaggle Competition Character Map
 char_to_idx = {' ': 0, '!': 1, '#': 2, '$': 3, '%': 4, '&': 5, "'": 6, '(': 7, ')': 8, '*': 9, '+': 10, ',': 11, '-': 12, '.': 13, '/': 14, '0': 15, '1': 16, '2': 17, '3': 18, '4': 19, '5': 20, '6': 21, '7': 22, '8': 23, '9': 24, ':': 25, ';': 26, '=': 27, '?': 28, '@': 29, '[': 30, '_': 31, 'a': 32, 'b': 33, 'c': 34, 'd': 35, 'e': 36, 'f': 37, 'g': 38, 'h': 39, 'i': 40, 'j': 41, 'k': 42, 'l': 43, 'm': 44, 'n': 45, 'o': 46, 'p': 47, 'q': 48, 'r': 49, 's': 50, 't': 51, 'u': 52, 'v': 53, 'w': 54, 'x': 55, 'y': 56, 'z': 57, '~': 58}
 idx_to_char = {int(v): k for k, v in char_to_idx.items()}
 
@@ -105,12 +104,10 @@ class ASLConformerSeq2Seq(nn.Module):
         self.decoder = TransformerDecoder(cfg)
     def forward(self, x, tgt): return self.decoder(tgt, self.encoder(x))
 
-# Load Model Safely 
 print("Loading model checkpoint...")
 model = ASLConformerSeq2Seq(Config).to(DEVICE)
 try:
     ckpt = torch.load(CKPT_PATH, map_location=DEVICE, weights_only=False)
-    # Handle if the checkpoint is just the state_dict directly or wrapped in a dict
     state_dict = ckpt.get('model_state_dict', ckpt)
     model.load_state_dict(state_dict)
     print("Model loaded successfully!")
@@ -165,7 +162,6 @@ def process_video_to_text(video_path):
     
     tensor_input = torch.from_numpy(seq.T).float().unsqueeze(0).to(DEVICE)
     
-    # Beam Search
     with torch.no_grad():
         memory = model.encoder(tensor_input)
         beams = [([START_IDX], 0.0)]
@@ -191,15 +187,18 @@ def process_video_and_speak(video_file, mode_selection):
     # 2. LLM Post-Processing
     enhanced_text = enhance_text_with_llm(raw_predicted_text, mode_selection)
     
-    # 3. Text-to-Speech Generation
+    # 3. Text-to-Speech Generation (REVERTED TO WORKING LOCAL PATH)
     audio_path = "output_audio.mp3"
     try:
-        tts = gTTS(text=enhanced_text, lang='en')
-        tts.save(audio_path)
+        if "System Error" in enhanced_text:
+            audio_path = None
+        else:
+            tts = gTTS(text=enhanced_text, lang='en')
+            tts.save(audio_path)
     except Exception as e:
         print(f"TTS Error: {e}")
         audio_path = None
-    
+        
     # 4. Return to UI
     return raw_predicted_text, enhanced_text, audio_path
 
@@ -208,33 +207,28 @@ def process_video_and_speak(video_file, mode_selection):
 # ==========================================
 
 custom_css = """
-body {
-    /* Updated to exact Official UofT Navy Blue (#00204E) */
+body, .gradio-container {
     background: linear-gradient(135deg, #001f3f, #00204E, #00337A) !important; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
 .gradio-container {
-    background: rgba(255, 255, 255, 0.03) !important; 
     backdrop-filter: blur(15px) !important;
     border-radius: 20px !important;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 1.5rem !important; 
 }
-/* Ensure clean center alignment for main blocks */
 div.video-input, div.submit-button, div.radio-wrapper {
     text-align: center;
     display: flex;
     justify-content: center;
 }
-/* Component Borders & Backgrounds */
 div.video-input, textarea, div.radio-wrapper label {
-    background: rgba(0, 32, 78, 0.4) !important; /* Adjusted to blend with UofT Navy */
+    background: rgba(0, 32, 78, 0.4) !important; 
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 10px !important;
     color: #f1f5f9 !important;
 }
-/* Radio buttons style */
 div.radio-wrapper input[type='radio']:checked + label {
     background-color: #007bff !important; 
     color: white !important;
@@ -253,8 +247,6 @@ button.primary:hover {
 """
 
 with gr.Blocks() as demo:
-    # BULLETPROOF CSS INJECTION: Forces the styling regardless of HF constraints
-    gr.HTML(f"<style>{custom_css}</style>")
     
     # NEW COMPACT HEADER: Flexbox keeps everything on one line
     gr.HTML("""
@@ -306,6 +298,6 @@ with gr.Blocks() as demo:
         outputs=[raw_text_output, enhanced_text_output, audio_output] 
     )
 
+# Re-added css parameter properly to the launch command
 if __name__ == "__main__":
-    # Removed CSS parameter here since we forcefully injected it above
-    demo.launch(theme="ocean", ssr_mode=False)
+    demo.launch(theme="ocean", css=custom_css, ssr_mode=False)
