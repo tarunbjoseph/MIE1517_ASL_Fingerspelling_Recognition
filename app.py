@@ -209,16 +209,17 @@ def process_video_and_speak(video_file, mode_selection):
 
 custom_css = """
 body {
-    background: linear-gradient(135deg, #0a192f, #002A5C, #2c5364) !important; 
+    /* Updated to exact Official UofT Navy Blue (#00204E) */
+    background: linear-gradient(135deg, #001f3f, #00204E, #00337A) !important; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
 .gradio-container {
-    background: rgba(0, 42, 92, 0.1) !important; 
+    background: rgba(255, 255, 255, 0.03) !important; 
     backdrop-filter: blur(15px) !important;
     border-radius: 20px !important;
-    box-shadow: 0 10px 40px rgba(0, 42, 92, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    padding: 1.5rem !important; /* Reduced padding to save space */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 1.5rem !important; 
 }
 /* Ensure clean center alignment for main blocks */
 div.video-input, div.submit-button, div.radio-wrapper {
@@ -228,8 +229,8 @@ div.video-input, div.submit-button, div.radio-wrapper {
 }
 /* Component Borders & Backgrounds */
 div.video-input, textarea, div.radio-wrapper label {
-    background: rgba(0, 42, 92, 0.2) !important;
-    border: 1px solid rgba(0, 42, 92, 0.3) !important;
+    background: rgba(0, 32, 78, 0.4) !important; /* Adjusted to blend with UofT Navy */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 10px !important;
     color: #f1f5f9 !important;
 }
@@ -242,7 +243,7 @@ div.radio-wrapper input[type='radio']:checked + label {
 button.primary {
     background: linear-gradient(90deg, #0056b3 0%, #007bff 100%) !important;
     border: none !important;
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4) !important;
     color: white !important;
     margin-top: 10px !important;
 }
@@ -280,7 +281,7 @@ with gr.Blocks() as demo:
     # Application Layout (Slightly tightened up to prevent scrolling)
     with gr.Row():
         with gr.Column(scale=1):
-            video_input = gr.Video(label="Capture ASL", height=350, elem_id="video-input") # Reduced height slightly
+            video_input = gr.Video(label="Capture ASL", height=350, elem_id="video-input") 
             
             mode_toggle = gr.Radio(
                 choices=["Emergency/Medical", "Basic Communication"], 
@@ -303,9 +304,6 @@ with gr.Blocks() as demo:
         outputs=[raw_text_output, enhanced_text_output, audio_output] 
     )
 
+# Cleaned up duplicate launch blocks
 if __name__ == "__main__":
     demo.launch(theme="ocean", css=custom_css, ssr_mode=False)
-
-if __name__ == "__main__":
-    # Ensure the theme is handled correctly on launch
-    demo.launch(theme="ocean")
