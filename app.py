@@ -253,6 +253,8 @@ button.primary:hover {
 """
 
 with gr.Blocks() as demo:
+    # BULLETPROOF CSS INJECTION: Forces the styling regardless of HF constraints
+    gr.HTML(f"<style>{custom_css}</style>")
     
     # NEW COMPACT HEADER: Flexbox keeps everything on one line
     gr.HTML("""
@@ -278,7 +280,7 @@ with gr.Blocks() as demo:
         </div>
     """)
     
-    # Application Layout (Slightly tightened up to prevent scrolling)
+    # Application Layout 
     with gr.Row():
         with gr.Column(scale=1):
             video_input = gr.Video(label="Capture ASL", height=350, elem_id="video-input") 
@@ -304,6 +306,6 @@ with gr.Blocks() as demo:
         outputs=[raw_text_output, enhanced_text_output, audio_output] 
     )
 
-# Cleaned up duplicate launch blocks
 if __name__ == "__main__":
-    demo.launch(theme="ocean", css=custom_css, ssr_mode=False)
+    # Removed CSS parameter here since we forcefully injected it above
+    demo.launch(theme="ocean", ssr_mode=False)
