@@ -7,6 +7,7 @@ import torch.nn.functional as F
 import mediapipe as mp
 import math
 import os
+import time  # <--- NEW IMPORT ADDED HERE
 from gtts import gTTS
 from llm_wrapper import enhance_text_with_llm
 
@@ -187,14 +188,20 @@ def process_video_and_speak(video_file, mode_selection):
     # 2. LLM Post-Processing
     enhanced_text = enhance_text_with_llm(raw_predicted_text, mode_selection)
     
-    # 3. Text-to-Speech Generation (REVERTED TO WORKING LOCAL PATH)
-    audio_path = "output_audio.mp3"
+    # 3. Text-to-Speech Generation (FIXED: Unique filenames prevent caching)
     try:
-        if "System Error" in enhanced_text:
+        # Don't generate audio if the LLM flagged it as a meaningless sign
+        if "System Error" in enhanced_text or not enhanced_text.strip():
             audio_path = None
         else:
+            # Create a unique filename using the current timestamp
+            unique_filename = f"output_audio_{int(time.time())}.mp3"
             tts = gTTS(text=enhanced_text, lang='en')
-            tts.save(audio_path)
+            tts.save(unique_filename)
+            
+            # Get the absolute path so Gradio 6's strict security allows it to be served
+            audio_path = os.path.abspath(unique_filename)
+            
     except Exception as e:
         print(f"TTS Error: {e}")
         audio_path = None
